@@ -6,17 +6,25 @@ import searchImages from './api';
 
 export default function App() {
   const [images, setImages] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (term) => {
+    setIsLoading(true)
     const result = await searchImages(term);
     setImages(result)
     console.log(result)
+    setIsLoading(false)
   }
   return (
     <div>
-      <SearchBar onSubmit={handleSubmit} />
-      <hr />
-      <ImageList images={images}/>
+      {!isLoading ?
+        <>
+          <SearchBar onSubmit={handleSubmit} />
+          <hr />
+          <ImageList images={images} />
+        </> :
+        <p>Loading...</p>
+      }
     </div>
   );
 }
